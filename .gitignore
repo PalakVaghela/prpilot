@@ -1,78 +1,84 @@
-# =========================
-# Environment variables
-# =========================
+# ==========================================
+# Environment Variables
+# ==========================================
 .env
 .env.*
 !.env.example
 
-# =========================
-# Next.js
-# =========================
-frontend/node_modules/
-frontend/.next/
-frontend/out/
-frontend/.turbo/
-frontend/.vercel/
-frontend/coverage/
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
 
-# Logs
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-frontend/pnpm-debug.log*
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
 
-# =========================
-# Django / Python
-# =========================
-backend/__pycache__/
-backend/*.py[cod]
-backend/*$py.class
+# Python Tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 
-# Virtual environments
-backend/venv/
-backend/.venv/
-backend/env/
-backend/ENV/
+# Type Checkers
+.pyre/
+.dmypy.json
 
-# Django database
-backend/db.sqlite3
-backend/db.sqlite3-journal
+# ==========================================
+# Django
+# ==========================================
+db.sqlite3
+db.sqlite3-journal
 
-# Static & media (optional)
-backend/staticfiles/
-backend/media/
+staticfiles/
+media/
 
-# Migrations (optional)
-# Uncomment ONLY if you don't want to track migrations
-# backend/**/migrations/
-# !backend/**/migrations/__init__.py
+# Django Logs
+logs/
+*.log
 
-# Python cache
-backend/.pytest_cache/
-backend/.mypy_cache/
-backend/.ruff_cache/
-backend/.coverage
-backend/htmlcov/
+# ==========================================
+# Node / Next.js
+# ==========================================
+node_modules/
+.next/
+out/
+.turbo/
+.vercel/
+coverage/
 
-# =========================
-# IDEs
-# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# IDE
+# ==========================================
 .vscode/
 .idea/
 
-# =========================
-# OS files
-# =========================
+# ==========================================
+# Operating System
+# ==========================================
 .DS_Store
 Thumbs.db
 
-# =========================
-# Logs
-# =========================
-*.log
+# ==========================================
+# Git
+# ==========================================
+*.orig
+*.rej
 
-# =========================
-# Misc
-# =========================
+# ==========================================
+# Swap Files
+# ==========================================
 *.swp
 *.swo
