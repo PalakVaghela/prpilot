@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,4 +14,5 @@ class HealthCheckView(APIView):
 
 urlpatterns = [
     path("health/", HealthCheckView.as_view(), name="health-check"),
+    path("users/", include("apps.users.urls")),
 ]
