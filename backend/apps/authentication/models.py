@@ -16,6 +16,7 @@ class GitHubAccount(TimeStampedModel):
     profile_url = models.URLField()
     access_token = models.TextField()
     is_active = models.BooleanField(default=True)
+    avatar_url = models.URLField(blank=True)
 
     class Meta:
         db_table = 'github_accounts'
