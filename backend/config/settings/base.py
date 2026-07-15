@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'apps.ai',
     'rest_framework',
+    'apps.authentication',
 ]
 
 MIDDLEWARE = [
