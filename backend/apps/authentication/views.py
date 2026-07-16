@@ -65,24 +65,24 @@ class GitHubCallbackView(APIView):
     )
         github_user = user_response.json()
         user, created = User.objects.update_or_create(
-        email=github_user.get("email") or f'{github_user["login"]}@github.local',
-        # some github user has a secret gmail so we have to use a any other name that's why local one is useed.
+        username=github_user["login"],
         defaults={
-            "username": github_user["login"],
+            "email": github_user.get("email") or f"{github_user['login']}@github.local",
             "first_name": github_user.get("name") or "",
         },
     )
+        # some github user has a secret gmail so we have to use a any other name that's why local one is useed.
         print(created, "creteddddddddddddddddddddddddd")
         GitHubAccount.objects.update_or_create(
         github_id=github_user["id"],
-            defaults={
+        defaults={
             "user": user,
             "username": github_user["login"],
             "name": github_user.get("name") or "",
             "email": github_user.get("email") or "",
+            "avatar_url": github_user.get("avatar_url") or "",
             "profile_url": github_user.get("html_url") or "",
             "access_token": access_token,
-            "avatar_url": github_user.get("avatar_url") or "",
             "is_active": True,
         },
     )

@@ -12,7 +12,7 @@ class GitHubAccount(TimeStampedModel):
     github_id = models.BigIntegerField(unique=True)
     username = models.CharField(max_length=255)
     name = models.CharField(max_length=255, blank=True)
-    email = models.EmailField(max_length=255)
+    email = models.EmailField(blank=True)
     profile_url = models.URLField()
     access_token = models.TextField()
     is_active = models.BooleanField(default=True)

@@ -12,12 +12,14 @@ class Repository(TimeStampedModel):
     language = models.CharField(max_length=100, blank=True)
     default_branch = models.CharField(max_length=100)
     private = models.BooleanField(default=False)
-    stars = models.IntegerField(default=0)
-    forks = models.IntegerField(default=0)
+    stars = models.PositiveIntegerField(default=0)
+    forks = models.PositiveIntegerField(default=0)
+    open_issues = models.PositiveIntegerField(default=0)
     html_url = models.URLField()
 
     class Meta:
         db_table = 'repositories'
+        ordering = ["name"]
 
     def __str__(self):
         return self.full_name
