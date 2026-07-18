@@ -4,10 +4,10 @@ from apps.repositories.models import Repository
 from apps.common.models import TimeStampedModel
 
 # Create your models here.
-class PullRequests(TimeStampedModel):
-    repository = models.ForeignKey(Repository, on_delete=models.CASCADE, related_name="pull_request")
+class PullRequest(TimeStampedModel):
+    repository = models.ForeignKey(Repository, on_delete=models.CASCADE, related_name="pull_requests")
     github_pr_id = models.BigIntegerField(unique=True)
-    number = models.IntegerField()
+    number = models.PositiveIntegerField()
     title = models.CharField(max_length=500)
     description = models.TextField(blank=True)
     state = models.CharField(max_length=20)
@@ -18,13 +18,14 @@ class PullRequests(TimeStampedModel):
 
     class Meta:
         db_table = 'pull_requests'
+        ordering = ["-number"]
 
     def __str__(self):
-        return f"PR #{self.number}"
+        return f"PR #{self.number} - {self.title}"
 
 
 class AiReviews(TimeStampedModel):
-    pull_request = models.OneToOneField(PullRequests, on_delete=models.CASCADE, related_name="ai_review")
+    pull_request = models.OneToOneField(PullRequest, on_delete=models.CASCADE, related_name="ai_review")
     summary = models.TextField()
     strengths = models.JSONField(default=list)
     issues = models.JSONField(default=list)
