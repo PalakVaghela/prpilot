@@ -17,5 +17,6 @@ urlpatterns = [
     path("users/", include("apps.users.urls")),
     path("auth/", include("apps.authentication.urls")),
     path("repositories/", include("apps.repositories.urls")),
-    path("pull-req/", include("apps.reviews.urls"))
+    path("pull-req/", include("apps.reviews.urls")),
+    path("ai/", include("apps.ai.urls")),
 ]
