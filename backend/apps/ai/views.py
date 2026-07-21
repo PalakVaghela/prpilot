@@ -39,9 +39,30 @@ class AIReviewView(APIView):
                 "Accept": "application/vnd.github+json",
             },
         )
+        if response.status_code != 200:
+            return Response(
+                {
+                    "error": "Failed to fetch the PR fiels",
+                    "github_resopnse": response.json()
+                },
+                status=response.status_code
+            )
+        files = response.json()
+        code_diff = ""
+        for file in files:
+            code_diff += f"""
+            File: {file['filename']}
+
+            Status: {file['status']}
+
+            Patch:
+            {file.get('patch', 'No patch available')}
+
+            {'=' * 80}
+            """
         return Response(
-        {
-            "status_code": response.status_code,
-            # "files": files,
-        }
-    )
+            {
+                "status_code": response.status_code,
+                "diff": code_diff,
+            }
+        )
