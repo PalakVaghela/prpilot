@@ -32,7 +32,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = []
 
-
+API_KEY = os.getenv("API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
