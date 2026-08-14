@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from .models import PullRequest
 from apps.authentication.models import GitHubAccount
 from apps.repositories.models import Repository
+from apps.ai.services.ai_review import review_pull_request
 
 
 # Create your views here.
@@ -66,3 +67,33 @@ class PullReqSyncView(APIView):
                 "saved": saved_count
             }
         )
+
+
+class AiReviewView(APIView):
+
+    def post(self, req, pr_id):
+        print("PR ID:", pr_id)
+        try:
+            pull_request = PullRequest.objects.get(id=pr_id)
+            print("Django ID:", pull_request.id)
+            print("GitHub PR number:", pull_request.number)
+            print("Title:", pull_request.title)
+            review = review_pull_request(pull_request)
+            return Response({
+                "message": "AI review completed",
+                "review": {
+                    "id": review.id,
+                    "summary": review.summary,
+                    "strengths": review.strengths,
+                    "issues": review.issues,
+                    "suggestions": review.suggestions,
+                    "score": float(review.score),
+                    "status": review.status,
+                    "model_name": review.model_name,
+                }
+            })
+        except PullRequest.DoesNotExist:
+            return Response(
+                {"error": "Pull request not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
