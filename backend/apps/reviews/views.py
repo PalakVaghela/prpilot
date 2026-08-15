@@ -97,3 +97,24 @@ class AiReviewView(APIView):
                 {"error": "Pull request not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+class PullRequestListView(APIView):
+
+    def get(self, request, repository_id):
+        pull_requests = PullRequest.objects.filter(
+            repository_id=repository_id
+        ).order_by("-created_at")
+        data = []
+        for pr in pull_requests:
+            data.append({
+                "id": pr.id,
+                "number": pr.number,
+                "title": pr.title,
+                "description": pr.description,
+                "state": pr.state,
+                "author": pr.author,
+                "base_branch": pr.base_branch,
+                "head_branch": pr.head_branch,
+                "html_url": pr.html_url,
+            })
+        return Response(data)

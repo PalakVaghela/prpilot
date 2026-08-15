@@ -55,3 +55,33 @@ class RepositorySyncView(APIView):
             }
             # here repositories is just key name and not field or anything
         )
+
+
+
+class RepositoryListView(APIView):
+
+    def get(self, request):
+        github_account = GitHubAccount.objects.first()
+        if not github_account:
+            return Response(
+                {"error": "Github account is not connected"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        repositories = Repository.objects.filter(
+            github_account=github_account
+        )
+        data = []
+        for repo in repositories:
+            data.append({
+                "id": repo.id,
+                "name": repo.name,
+                "full_name": repo.full_name,
+                "description": repo.description,
+                "language": repo.language,
+                "private": repo.private,
+                "stars": repo.stars,
+                "forks": repo.forks,
+                "open_issues": repo.open_issues,
+                "html_url": repo.html_url,
+            })
+        return Response(data)
