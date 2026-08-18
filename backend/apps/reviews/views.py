@@ -101,11 +101,45 @@ class AiReviewView(APIView):
 class PullRequestListView(APIView):
 
     def get(self, request, repository_id):
-        pull_requests = PullRequest.objects.filter(
-            repository_id=repository_id
-        ).order_by("-created_at")
+        github_account = GitHubAccount.objects.first()
+        if not github_account:
+            return Response(
+                {"error": "Github account is not connected"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        repository = Repository.objects.get(id=repository_id)
+        response = requests.get(
+            f"https://api.github.com/repos/{repository.full_name}/pulls",
+            headers={
+                "Authorization": f"Bearer {github_account.access_token}",
+                "Accept": "application/vnd.github+json",
+            },
+            params={
+                "state": "open",
+            },
+        )
+        response.raise_for_status()
+        pull_requests = response.json()
+        for req in pull_requests:
+            PullRequest.objects.update_or_create(
+                github_pr_id=req["id"],
+                defaults={
+                    "repository": repository,
+                    "title": req["title"],
+                    "description": req["body"] or "",
+                    "state": req["state"],
+                    "author": req["user"]["login"],
+                    "base_branch": req["base"]["ref"],
+                    "head_branch": req["head"]["ref"],
+                    "html_url": req["html_url"],
+                    "number": req["number"],
+                }
+            )
+        saved_pull_requests = PullRequest.objects.filter(
+            repository=repository
+        ).order_by("-number")
         data = []
-        for pr in pull_requests:
+        for pr in saved_pull_requests:
             data.append({
                 "id": pr.id,
                 "number": pr.number,
