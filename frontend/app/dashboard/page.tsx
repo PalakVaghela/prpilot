@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Repository = {
   id: number;
@@ -138,6 +139,7 @@ function RepositoryCard({
 }: {
   repository: Repository;
 }) {
+  const router = useRouter();
   return (
     <div className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/50 p-6 transition hover:border-slate-700">
       <div>
@@ -164,9 +166,14 @@ function RepositoryCard({
         </div>
       </div>
 
-      <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium transition hover:bg-blue-500">
-        View
-      </button>
+      <button
+      onClick={() =>
+        router.push(`/dashboard/repositories/${repository.id}`)
+      }
+      className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium transition hover:bg-blue-500"
+    >
+      View
+    </button>
     </div>
   );
 }
