@@ -152,3 +152,25 @@ class PullRequestListView(APIView):
                 "html_url": pr.html_url,
             })
         return Response(data)
+
+class PullRequestDetailView(APIView):
+
+    def get(self, request, pr_id):
+        try:
+            pull_request = PullRequest.objects.get(id=pr_id)
+            return Response({
+                "id": pull_request.id,
+                "number": pull_request.number,
+                "title": pull_request.title,
+                "description": pull_request.description,
+                "state": pull_request.state,
+                "author": pull_request.author,
+                "base_branch": pull_request.base_branch,
+                "head_branch": pull_request.head_branch,
+                "html_url": pull_request.html_url,
+            })
+        except PullRequest.DoesNotExist:
+            return Response(
+                {"error": "Pull request not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
